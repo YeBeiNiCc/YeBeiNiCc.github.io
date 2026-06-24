@@ -29,6 +29,7 @@ async function handleLogin(request: Request) {
   const authorizeUrl = new URL("https://github.com/login/oauth/authorize");
   authorizeUrl.searchParams.set("client_id", process.env.KEYSTATIC_GITHUB_CLIENT_ID!);
   authorizeUrl.searchParams.set("redirect_uri", `${reqUrl.origin}/api/keystatic/github/oauth/callback`);
+  authorizeUrl.searchParams.set("scope", "public_repo");
 
   const headers = new Headers();
   headers.set("Location", authorizeUrl.toString());
