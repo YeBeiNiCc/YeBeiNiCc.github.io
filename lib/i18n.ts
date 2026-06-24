@@ -6,6 +6,7 @@ const dictionaries = {
   en: {
     // Header
     "nav.home": "Home",
+    "nav.projects": "Projects",
     "nav.about": "About",
     "nav.admin": "Admin",
 
@@ -31,6 +32,7 @@ const dictionaries = {
   zh: {
     // Header
     "nav.home": "首页",
+    "nav.projects": "项目",
     "nav.about": "关于",
     "nav.admin": "管理",
 

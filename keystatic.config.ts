@@ -25,9 +25,48 @@ export default config({
           formatting: true,
           dividers: true,
           links: true,
+          images: { directory: "public/uploads", publicPath: "/uploads" },
+          tables: true,
+        }),
+      },
+    }),
+    projects: collection({
+      label: "Projects",
+      slugField: "title",
+      path: "content/projects/*",
+      format: { contentField: "body" },
+      columns: ["title", "status"],
+      schema: {
+        title: fields.slug({ name: { label: "Project Name" } }),
+        status: fields.select({
+          label: "Status",
+          options: [
+            { label: "Active", value: "active" },
+            { label: "Completed", value: "completed" },
+            { label: "On Hold", value: "on-hold" },
+          ],
+          defaultValue: "active",
+        }),
+        description: fields.text({ label: "Description", multiline: true }),
+        technologies: fields.array(fields.text({ label: "Tech" }), {
+          label: "Technologies Used",
+          itemLabel: (props) => props.value,
+        }),
+        githubUrl: fields.url({ label: "GitHub Repository URL" }),
+        demoUrl: fields.url({ label: "Live Demo URL" }),
+        coverImage: fields.image({
+          label: "Cover Image",
+          directory: "public/uploads/projects",
+          publicPath: "/uploads/projects",
+        }),
+        body: fields.document({
+          label: "Project Details",
+          formatting: true,
+          dividers: true,
+          links: true,
           images: {
-            directory: "public/uploads",
-            publicPath: "/uploads",
+            directory: "public/uploads/projects",
+            publicPath: "/uploads/projects",
           },
           tables: true,
         }),
@@ -51,11 +90,7 @@ export default config({
       format: "yaml",
       schema: {
         title: fields.text({ label: "Title" }),
-        body: fields.document({
-          label: "Content",
-          formatting: true,
-          links: true,
-        }),
+        body: fields.document({ label: "Content", formatting: true, links: true }),
       },
     }),
   },

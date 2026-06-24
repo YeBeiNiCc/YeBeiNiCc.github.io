@@ -17,6 +17,12 @@ export async function SiteHeader() {
               {t("nav.home")}
             </Link>
             <Link
+              href="/projects"
+              className="text-sm hover:text-blue-600 transition-colors"
+            >
+              {t("nav.projects")}
+            </Link>
+            <Link
               href="/about"
               className="text-sm hover:text-blue-600 transition-colors"
             >
