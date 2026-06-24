@@ -1,0 +1,35 @@
+baseURL = "https://YOUR_USERNAME.github.io"  # TODO: Replace with your GitHub Pages URL
+locale = "zh-CN"
+title = "My Blog"
+theme = "papermod"
+defaultContentLanguage = "zh"
+enableEmoji = true
+
+[params]
+  author = "Your Name"
+  description = "A personal blog about technology and life"
+  heroTitle = "Hi, I'm Your Name 👋"
+  heroDescription = "A personal blog about technology, coding, and life."
+  mainSections = ["posts"]
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 3
+
+[markup]
+  [markup.highlight]
+    style = "dracula"
+    lineNos = true
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
