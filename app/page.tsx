@@ -21,7 +21,7 @@ export default async function Home() {
     <div className="min-h-screen">
       <section className="py-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4">
-          {settings?.title || "My Blog"}
+          薇薇简
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
           {settings?.description || t("hero.subtitle")}
