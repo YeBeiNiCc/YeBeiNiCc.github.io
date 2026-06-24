@@ -1,4 +1,4 @@
-baseURL = "https://YOUR_USERNAME.github.io"  # TODO: Replace with your GitHub Pages URL
+baseURL = "https://YeBeiNiCc.github.io"
 locale = "zh-CN"
 title = "My Blog"
 theme = "papermod"
