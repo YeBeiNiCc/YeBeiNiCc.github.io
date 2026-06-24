@@ -1,9 +1,13 @@
-import { notFound } from "next/navigation";
+import Link from "next/link";
 import { reader } from "@/lib/reader";
 import { DocumentRenderer } from "@keystatic/core/renderer";
+import { getTranslations } from "@/lib/i18n";
 
 export default async function AboutPage() {
-  const about = await reader.singletons.about.read().catch(() => null);
+  const [about, { t }] = await Promise.all([
+    reader.singletons.about.read().catch(() => null),
+    getTranslations(),
+  ]);
 
   if (!about) {
     return (
@@ -11,8 +15,9 @@ export default async function AboutPage() {
         <div className="prose prose-lg dark:prose-invert max-w-none">
           <h1>About</h1>
           <p>
-            About page content coming soon. Edit it in the{" "}
-            <a href="/keystatic">admin panel</a>.
+            {t("about.placeholder")}
+            <Link href="/keystatic">{t("about.placeholderLink")}</Link>
+            {t("about.placeholderEnd")}
           </p>
         </div>
       </div>

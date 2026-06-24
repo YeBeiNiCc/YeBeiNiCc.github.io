@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { reader } from "@/lib/reader";
+import { getTranslations } from "@/lib/i18n";
 
 export default async function Home() {
-  const [posts, settings] = await Promise.all([
+  const [posts, settings, { t }] = await Promise.all([
     reader.collections.posts.all(),
     reader.singletons.settings.read().catch(() => null),
+    getTranslations(),
   ]);
 
   const sortedPosts = posts
@@ -22,17 +24,17 @@ export default async function Home() {
           {settings?.title || "My Blog"}
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
-          {settings?.description}
+          {settings?.description || t("hero.subtitle")}
         </p>
       </section>
 
       <section className="max-w-2xl mx-auto px-4 pb-20">
-        <h2 className="text-2xl font-bold mb-8">Recent Posts</h2>
+        <h2 className="text-2xl font-bold mb-8">{t("section.recentPosts")}</h2>
         {sortedPosts.length === 0 ? (
           <p className="text-gray-500 text-center py-12">
-            No posts yet.{" "}
+            {t("posts.empty")}{" "}
             <Link href="/keystatic" className="text-blue-600 hover:underline">
-              Write your first post →
+              {t("posts.writeFirst")}
             </Link>
           </p>
         ) : (

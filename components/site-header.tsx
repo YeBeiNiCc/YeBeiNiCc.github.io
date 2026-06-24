@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { reader } from "@/lib/reader";
+import { getTranslations } from "@/lib/i18n";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export async function SiteHeader() {
-  const settings = await reader.singletons.settings.read().catch(() => null);
+  const [settings, { t, locale }] = await Promise.all([
+    reader.singletons.settings.read().catch(() => null),
+    getTranslations(),
+  ]);
 
   return (
     <header className="border-b border-gray-200 dark:border-gray-800">
@@ -13,17 +18,29 @@ export async function SiteHeader() {
         >
           {settings?.title || "My Blog"}
         </Link>
-        <nav className="flex items-center gap-6">
-          <Link href="/" className="text-sm hover:text-blue-600 transition-colors">
-            Home
-          </Link>
-          <Link href="/about" className="text-sm hover:text-blue-600 transition-colors">
-            About
-          </Link>
-          <Link href="/keystatic" className="text-sm hover:text-blue-600 transition-colors">
-            Admin
-          </Link>
-        </nav>
+        <div className="flex items-center gap-6">
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/"
+              className="text-sm hover:text-blue-600 transition-colors"
+            >
+              {t("nav.home")}
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm hover:text-blue-600 transition-colors"
+            >
+              {t("nav.about")}
+            </Link>
+            <Link
+              href="/keystatic"
+              className="text-sm hover:text-blue-600 transition-colors"
+            >
+              {t("nav.admin")}
+            </Link>
+          </nav>
+          <LanguageSwitcher current={locale} />
+        </div>
       </div>
     </header>
   );

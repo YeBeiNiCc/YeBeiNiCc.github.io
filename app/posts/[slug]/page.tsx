@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { reader } from "@/lib/reader";
 import { DocumentRenderer } from "@keystatic/core/renderer";
+import { getTranslations } from "@/lib/i18n";
 
 export async function generateStaticParams() {
   const posts = await reader.collections.posts.all();
@@ -25,11 +26,17 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await reader.collections.posts.read(slug);
+  const [post, { t }] = await Promise.all([
+    reader.collections.posts.read(slug),
+    getTranslations(),
+  ]);
 
   if (!post) notFound();
 
-  const body = typeof post.body === "function" ? await (post.body as () => Promise<unknown>)() : post.body;
+  const body =
+    typeof post.body === "function"
+      ? await (post.body as () => Promise<unknown>)()
+      : post.body;
 
   return (
     <article className="max-w-3xl mx-auto px-4 py-12">
@@ -38,7 +45,7 @@ export default async function PostPage({
           href="/"
           className="text-sm text-blue-600 hover:underline mb-4 inline-block"
         >
-          ← Back to Home
+          {t("post.backToHome")}
         </Link>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">
           {post.title}
