@@ -1,16 +1,13 @@
 import keystaticConfig from "@/keystatic.config";
 
-// Dynamic import so build doesn't fail when env vars aren't set
 async function createHandler() {
-  try {
-    const { makeRouteHandler } = await import("@keystatic/next/route-handler");
-    return makeRouteHandler({ config: keystaticConfig });
-  } catch {
-    return {
-      GET: () => new Response("Keystatic not configured", { status: 500 }),
-      POST: () => new Response("Keystatic not configured", { status: 500 }),
-    };
-  }
+  const { makeRouteHandler } = await import("@keystatic/next/route-handler");
+  return makeRouteHandler({
+    config: keystaticConfig,
+    clientId: process.env.KEYSTATIC_GITHUB_CLIENT_ID!,
+    clientSecret: process.env.KEYSTATIC_GITHUB_CLIENT_SECRET!,
+    secret: process.env.KEYSTATIC_SECRET!,
+  });
 }
 
 const handler = createHandler();
