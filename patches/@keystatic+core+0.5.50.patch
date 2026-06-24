@@ -1,5 +1,5 @@
 diff --git a/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js b/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js
-index aabdb1a..1c1bad7 100644
+index aabdb1a..6ab2421 100644
 --- a/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js
 +++ b/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js
 @@ -186,9 +186,6 @@ function makeGenericAPIRouteHandler(_config, options) {
@@ -39,3 +39,20 @@ index aabdb1a..1c1bad7 100644
      path: '/'
    })]];
    return headers;
+@@ -295,6 +295,16 @@ async function githubRefreshToken(req, config) {
+ }
+ async function refreshGitHubAuth(req, config) {
+   const refreshToken = await getRefreshToken(req, config);
++  // OAuth App tokens dont support refresh; just return existing cookie headers
++  const existingToken = cookie.parse(req.headers.get("cookie") || "")["keystatic-gh-access-token"];
++  if (!refreshToken && existingToken) {
++    return [["Set-Cookie", cookie.serialize("keystatic-gh-access-token", existingToken, {
++      sameSite: "lax",
++      secure: process.env.NODE_ENV === "production",
++      maxAge: 31536000,
++      path: "/"
++    })]];
++  }
+   if (!refreshToken) {
+     return;
+   }
