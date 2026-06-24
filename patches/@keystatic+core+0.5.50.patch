@@ -1,0 +1,41 @@
+diff --git a/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js b/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js
+index aabdb1a..1c1bad7 100644
+--- a/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js
++++ b/node_modules/@keystatic/core/dist/keystatic-core-api-generic.js
+@@ -186,9 +186,6 @@ function makeGenericAPIRouteHandler(_config, options) {
+ }
+ const tokenDataResultType = s.type({
+   access_token: s.string(),
+-  expires_in: s.number(),
+-  refresh_token: s.string(),
+-  refresh_token_expires_in: s.number(),
+   scope: s.string(),
+   token_type: s.literal('bearer')
+ });
+@@ -251,18 +248,21 @@ async function githubOauthCallback(req, config) {
+   return redirect(`/keystatic${from ? `/${from}` : ''}`, headers);
+ }
+ async function getTokenCookies(tokenData, config) {
++  const expires_in = tokenData.expires_in ?? 31536000;
++  const refresh_token = tokenData.refresh_token ?? tokenData.access_token;
++  const refresh_token_expires_in = tokenData.refresh_token_expires_in ?? expires_in;
+   const headers = [['Set-Cookie', cookie.serialize('keystatic-gh-access-token', tokenData.access_token, {
+     sameSite: 'lax',
+     secure: process.env.NODE_ENV === 'production',
+-    maxAge: tokenData.expires_in,
+-    expires: new Date(Date.now() + tokenData.expires_in * 1000),
++    maxAge: expires_in,
++    expires: new Date(Date.now() + expires_in * 1000),
+     path: '/'
+-  })], ['Set-Cookie', cookie.serialize('keystatic-gh-refresh-token', await encryptValue(tokenData.refresh_token, config.secret), {
++  })], ['Set-Cookie', cookie.serialize('keystatic-gh-refresh-token', await encryptValue(refresh_token, config.secret), {
+     sameSite: 'lax',
+     secure: process.env.NODE_ENV === 'production',
+     httpOnly: true,
+-    maxAge: tokenData.refresh_token_expires_in,
+-    expires: new Date(Date.now() + tokenData.refresh_token_expires_in * 100),
++    maxAge: refresh_token_expires_in,
++    expires: new Date(Date.now() + refresh_token_expires_in * 100),
+     path: '/'
+   })]];
+   return headers;
