@@ -1,12 +1,8 @@
 import Link from "next/link";
 import { reader } from "@/lib/reader";
-import { getTranslations } from "@/lib/i18n";
 
 export default async function PostsPage() {
-  const [posts, { t }] = await Promise.all([
-    reader.collections.posts.all(),
-    getTranslations(),
-  ]);
+  const posts = await reader.collections.posts.all();
 
   const sortedPosts = posts
     .filter((post) => post.entry.publishDate)
@@ -18,12 +14,12 @@ export default async function PostsPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">{t("page.allPosts")}</h1>
+      <h1 className="text-3xl font-bold mb-8">全部文章</h1>
       {sortedPosts.length === 0 ? (
         <p className="text-gray-500 text-center py-12">
-          {t("posts.empty")}{" "}
+          还没有文章。{" "}
           <Link href="/keystatic" className="text-blue-600 hover:underline">
-            {t("posts.writeFirst")}
+            写第一篇 →
           </Link>
         </p>
       ) : (

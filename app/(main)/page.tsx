@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { reader } from "@/lib/reader";
-import { getTranslations } from "@/lib/i18n";
 
 export default async function Home() {
-  const [posts, settings, { t }] = await Promise.all([
+  const [posts, settings] = await Promise.all([
     reader.collections.posts.all(),
     reader.singletons.settings.read().catch(() => null),
-    getTranslations(),
   ]);
 
   const sortedPosts = posts
@@ -24,17 +22,17 @@ export default async function Home() {
           薇薇简
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
-          {settings?.description || t("hero.subtitle")}
+          {settings?.description || "关于技术和生活的个人博客"}
         </p>
       </section>
 
       <section className="max-w-2xl mx-auto px-4 pb-20">
-        <h2 className="text-2xl font-bold mb-8">{t("section.recentPosts")}</h2>
+        <h2 className="text-2xl font-bold mb-8">最新文章</h2>
         {sortedPosts.length === 0 ? (
           <p className="text-gray-500 text-center py-12">
-            {t("posts.empty")}{" "}
+            还没有文章。{" "}
             <Link href="/keystatic" className="text-blue-600 hover:underline">
-              {t("posts.writeFirst")}
+              写第一篇 →
             </Link>
           </p>
         ) : (

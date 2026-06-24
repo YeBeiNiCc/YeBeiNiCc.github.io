@@ -1,23 +1,18 @@
 import Link from "next/link";
 import { reader } from "@/lib/reader";
 import { DocumentRenderer } from "@keystatic/core/renderer";
-import { getTranslations } from "@/lib/i18n";
 
 export default async function AboutPage() {
-  const [about, { t }] = await Promise.all([
-    reader.singletons.about.read().catch(() => null),
-    getTranslations(),
-  ]);
+  const about = await reader.singletons.about.read().catch(() => null);
 
   if (!about) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="prose prose-lg dark:prose-invert max-w-none">
-          <h1>About</h1>
+          <h1>关于</h1>
           <p>
-            {t("about.placeholder")}
-            <Link href="/keystatic">{t("about.placeholderLink")}</Link>
-            {t("about.placeholderEnd")}
+            关于页面内容即将上线。在{" "}
+            <Link href="/keystatic">后台管理</Link> 中编辑。
           </p>
         </div>
       </div>
